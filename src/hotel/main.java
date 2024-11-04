@@ -16,7 +16,8 @@ public class main {
             System.out.println("1. Room");
             System.out.println("2. Guest");
             System.out.println("3. Bookings");
-            System.out.println("4. Exit");
+            System.out.println("4. Report");
+            System.out.println("5. Exit");
 
             int action = 0; 
             boolean validInput = false;
@@ -25,8 +26,8 @@ public class main {
                 try {
                     System.out.print("Enter action: ");
                     action = sc.nextInt();
-                    if (action < 1 || action > 4) {
-                        throw new IllegalArgumentException("Invalid choice. Please choose between 1 and 4.");
+                    if (action < 1 || action > 5) {
+                        throw new IllegalArgumentException("Invalid choice. Please choose between 1 and 5.");
                     }
                     validInput = true; 
                 } catch (IllegalArgumentException e) {
@@ -51,9 +52,14 @@ public class main {
                     bookings bk = new bookings();
                     bk.aBookings();
                     break;
-                case 4:
+                    case 4:
+                    report rp = new report();
+                    
+                    break;
+                case 5:
                     exit = true;
                     break;
+                    
             }
 
                 System.out.print("Do you want to continue? (yes/no): ");
