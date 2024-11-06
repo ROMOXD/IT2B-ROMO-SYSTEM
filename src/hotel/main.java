@@ -54,7 +54,7 @@ public class main {
                     break;
                     case 4:
                     report rp = new report();
-                    
+                    rp.aReport();
                     break;
                 case 5:
                     exit = true;

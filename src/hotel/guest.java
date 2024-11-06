@@ -86,7 +86,7 @@ public class guest {
         config conf = new config();
         conf.addRecord(sql, name, age, email, status);
         
-        
+        System.out.println("Guest added successfully!");
     }
      
      public void viewGuest() {
@@ -105,6 +105,7 @@ public class guest {
         
         System.out.print("Enter Guest ID: ");
         int id = sc.nextInt();
+        sc.nextLine();
         System.out.print("Guest New Name: ");
         String name = sc.nextLine();
         System.out.print("Guest New Age(18+): ");
@@ -114,11 +115,12 @@ public class guest {
         System.out.print("Guest New Status: ");
         String status = sc.next();
 
-        String qry = "UPDATE tbl_guest SET g_name = ?, g_age = ?, g_email = ?, g_status = ? WHERE r_id = ?";
+        String qry = "UPDATE tbl_guest SET g_name = ?, g_age = ?, g_email = ?, g_status = ? WHERE g_id = ?";
 
         config conf = new config();
-        conf.addRecord(qry, name, age, email, status, id);
-    
+        conf.updateRecord(qry, name, age, email, status, id);
+        
+        System.out.println("Guest updated successfully!");
     }
     
     public void deleteGuest(){
@@ -133,6 +135,7 @@ public class guest {
         config conf = new config();
         conf.deleteRecord(qry, id);   
     
+        System.out.println("Guest deleted successfully!");
     }  
     
 }

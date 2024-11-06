@@ -67,74 +67,27 @@ public class room {
     }
 
     public void addRoom() {
-    System.out.println("\n//CHOICES//\n\n* Standard Room *  (300 square feet)");
+    
+        System.out.println("\n//CHOICES//\n\n* Standard Room *  (300 square feet)");
     System.out.println("* Deluxe Room   *  (600 square feet)");
     System.out.println("* Suite Room    *  (1200 square feet)\n");
 
     Scanner sc = new Scanner(System.in);
-    String rType = "";
-    boolean validRoomType = false;
-
-   
-    double standardRoomPrice = 300;
-    double deluxeRoomPrice = 500;
-    double suiteRoomPrice = 750;
-    double expectedPrice = 0;
-    String formattedRoomType = ""; 
-
     
-    while (!validRoomType) {
         System.out.print("Enter Room Type: ");
-        rType = sc.nextLine().trim().replaceAll("\\s+", ""); 
+        String rType = sc.nextLine(); 
 
-        
-        if (rType.equalsIgnoreCase("StandardRoom")) {
-            expectedPrice = standardRoomPrice;
-            formattedRoomType = "Standard Room";
-            validRoomType = true;
-        } else if (rType.equalsIgnoreCase("DeluxeRoom")) {
-            expectedPrice = deluxeRoomPrice;
-            formattedRoomType = "Deluxe Room";
-            validRoomType = true;
-        } else if (rType.equalsIgnoreCase("SuiteRoom")) {
-            expectedPrice = suiteRoomPrice;
-            formattedRoomType = "Suite Room";
-            validRoomType = true;
-        } else {
-            System.out.println("Invalid room type. Please enter one of the following: Standard Room, Deluxe Room, Suite Room.");
-        }
-    }
+    System.out.println("\n//CHOICES//\n\nStandard Room (* 300 * Pesos");
+    System.out.println("Deluxe Room (* 500 * Pesos)");
+    System.out.println("Suite Room (*750* Pesos)");
 
-    System.out.println("\n//CHOICES//\n\nStandard Room (* 300 * Pesos/Hourly)");
-    System.out.println("Deluxe Room (* 500 * Pesos/Hourly)");
-    System.out.println("Suite Room (*750* Pesos/Hourly)");
-
-    boolean validPrice = false;
-    double rPrice = 0;
-
-   
-    while (!validPrice) {
-        System.out.print("Enter Room Price: ");
-        
-        try {
-            rPrice = sc.nextDouble();
-
-          
-            if (rPrice == expectedPrice) {
-                validPrice = true;
-            } else {
-                System.out.println("Invalid price. The price for the " + formattedRoomType + " should be " + expectedPrice + " Pesos.");
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid input. Please enter a numeric value for the price.");
-            sc.next(); 
-        }
-    }
+    System.out.print("\nEnter Room Price: ");
+    double rPrice = sc.nextDouble();
 
     String sql = "INSERT INTO tbl_room (r_type, r_price) VALUES (?, ?)";
 
     config conf = new config();
-    conf.addRecord(sql, formattedRoomType, rPrice);  
+    conf.addRecord(sql, rType, rPrice);  
 
     System.out.println("Room added successfully!");
 }
@@ -150,30 +103,33 @@ public class room {
     }
 
     public void updateRoom() {
-        System.out.println("\n//CHOICES//\n\n* Standard Room *  (300 square feet)");
-        System.out.println("* Deluxe Room   *  (600 square feet)");
-        System.out.println("* Suite Room    *  (1200 square feet)");
-
+ 
         Scanner sc = new Scanner(System.in);
-
+        
         System.out.print("Enter Room ID: ");
         int id = sc.nextInt();
-        
-        System.out.print("New Room Type: ");
-        String nRtype = sc.next();
+        sc.nextLine();
+         
+        System.out.println("\n//CHOICES//\n\nStandard Room (* 300 * Pesos");
+        System.out.println("Deluxe Room (* 500 * Pesos)");
+        System.out.println("Suite Room (*750* Pesos)");
+       
+        System.out.print("\nNew Room Type: ");
+        String nRtype = sc.nextLine();
         
         System.out.println("\n//CHOICES//\n\nStandard Room (* 300 * Pesos/Hourly)");
         System.out.println("Deluxe Room (* 500 * Pesos/Hourly)");
         System.out.println("Suite Room (*750* Pesos/Hourly)'n");
         
-        System.out.print("New Room Price: ");
-        String nPrice = sc.next();
+        System.out.print("\nNew Room Price: ");
+        double nPrice = sc.nextDouble();
 
         String qry = "UPDATE tbl_room SET r_type = ?, r_price = ? WHERE r_id = ?";
 
         config conf = new config();
         conf.updateRecord(qry, nRtype, nPrice, id);
-        
+       
+        System.out.println("Room updated successfully!");
     }
 
     public void deleteRoom() {
@@ -186,5 +142,7 @@ public class room {
 
         config conf = new config();
         conf.deleteRecord(qry, id);
+        
+        System.out.println("Room deleted successfully!");
     }
 }
