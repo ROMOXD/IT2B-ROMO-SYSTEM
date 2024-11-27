@@ -6,26 +6,24 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class bookings {
-    
-    
-    public void aBookings(){
-       Scanner sc = new Scanner(System.in);    
-     String response;
-        
-        do{
-        System.out.println("\n----------------------");
-        System.out.println("| Bookings Interface |");
-        System.out.println("----------------------\n");
-        System.out.println("1. Add Bookings");
-        System.out.println("2. View Bookings");
-        System.out.println("3. Update Bookings");
-        System.out.println("4. Delete Bookings");
-        System.out.println("5. Main Menu");
-        
-        int action = 0; 
+
+    public void aBookings() {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\n==========================");
+            System.out.println("||  Bookings Interface  ||");
+            System.out.println("==========================");
+            System.out.println("||  1. Add Bookings     ||");
+            System.out.println("||  2. View Bookings    ||");
+            System.out.println("||  3. Update Bookings  ||");
+            System.out.println("||  4. Delete Bookings  ||");
+            System.out.println("||  5. Main Menu        ||");
+            System.out.println("==========================\n");
+
+            int action = 0;
             boolean validInput = false;
 
-            
             while (!validInput) {
                 try {
                     System.out.print("Enter action: ");
@@ -33,42 +31,36 @@ public class bookings {
                     if (action < 1 || action > 5) {
                         throw new IllegalArgumentException("Invalid choice. Please choose between 1 and 5.");
                     }
-                    validInput = true; 
+                    validInput = true;
                 } catch (IllegalArgumentException e) {
                     System.out.println(e.getMessage());
-                    sc.nextLine(); 
+                    sc.nextLine();
                 } catch (Exception e) {
                     System.out.println("Invalid input. Please enter a number.");
-                    sc.nextLine(); 
+                    sc.nextLine();
                 }
             }
-            
-            bookings bk = new bookings();
-            
-            switch(action){
-               case 1:
-                  bk.addBookings(); 
-                break;
-               case 2:
-                  bk.viewBookings();          
-                break;   
+
+            switch (action) {
+                case 1:
+                    addBookings();
+                    break;
+                case 2:
+                    viewBookings();
+                    break;
                 case 3:
-                  bk.updateBookings();
-                break;
+                    updateBookings();
+                    break;
                 case 4:
-                  bk.deleteBookings();
-                break;
+                    deleteBookings();
+                    break;
                 case 5:
                     System.out.println("Returning to Main Menu...");
                     return;
+                default:
+                    System.out.println("Invalid choice. Please select a valid option.");
             }
-            
-            System.out.print("Do you want to continue? (yes/no): ");
-            response = sc.next();
-       
-    } while(response.equalsIgnoreCase("yes"));
-            System.out.println("Thank you, See you!!");
-
+        }
     }
     
     public void addBookings(){

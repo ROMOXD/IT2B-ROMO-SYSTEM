@@ -3,26 +3,24 @@ package hotel;
 import java.util.Scanner;
 
 public class guest {
-    
-    
-    public void aGuest(){
-       Scanner sc = new Scanner(System.in);    
-     String response;
-        
-        do{
-        System.out.println("\n-------------------");
-        System.out.println("| Guest Interface |");
-        System.out.println("-------------------\n");
-        System.out.println("1. Add Guest");
-        System.out.println("2. View Guest");
-        System.out.println("3. Update Guest");
-        System.out.println("4. Delete Guest");
-        System.out.println("5. Main Menu");
-        
-        int action = 0; 
+
+    public void aGuest() {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+             System.out.println("\n==========================");
+            System.out.println("||   Guest Interface    ||");
+            System.out.println("==========================");
+            System.out.println("||    1. Add Guest      ||");
+            System.out.println("||    2. View Guest     ||");
+            System.out.println("||    3. Update Guest   ||");
+            System.out.println("||    4. Delete Guest   ||");
+            System.out.println("||    5. Main Menu      ||");
+            System.out.println("==========================\n");
+
+            int action = 0;
             boolean validInput = false;
 
-            
             while (!validInput) {
                 try {
                     System.out.print("Enter action: ");
@@ -30,42 +28,38 @@ public class guest {
                     if (action < 1 || action > 5) {
                         throw new IllegalArgumentException("Invalid choice. Please choose between 1 and 5.");
                     }
-                    validInput = true; 
+                    validInput = true;
                 } catch (IllegalArgumentException e) {
                     System.out.println(e.getMessage());
                     sc.nextLine();
                 } catch (Exception e) {
                     System.out.println("Invalid input. Please enter a number.");
-                    sc.nextLine(); 
+                    sc.nextLine();
                 }
             }
-            
+
             guest gt = new guest();
-            
-            switch(action){
-               case 1:
-                  gt.addGuest(); 
-                break;
-               case 2:
-                  gt.viewGuest();
-                break;   
+
+            switch (action) {
+                case 1:
+                    gt.addGuest();
+                    break;
+                case 2:
+                    gt.viewGuest();
+                    break;
                 case 3:
-                  gt.updateGuest();
-                break;
+                    gt.updateGuest();
+                    break;
                 case 4:
-                  gt.deleteGuest();
-                break;
+                    gt.deleteGuest();
+                    break;
                 case 5:
                     System.out.println("Returning to Main Menu...");
                     return;
+                default:
+                    System.out.println("Invalid choice. Please select a valid option.");
             }
-            
-            System.out.print("Do you want to continue? (yes/no): ");
-            response = sc.next();
-       
-    } while(response.equalsIgnoreCase("yes"));
-            System.out.println("Thank you, See you!!");
-
+        }
     }
     
      public void addGuest() {
@@ -109,7 +103,7 @@ public class guest {
         String status = "";
         while (true) {
         try {
-            status = sc.next(); 
+            status = sc.nextLine(); 
             if (status.matches(".*\\d.*")) { 
                 throw new IllegalArgumentException("Status must not contain numbers!");
             }

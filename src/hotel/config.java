@@ -68,31 +68,81 @@ public void addRecord(String sql, Object... values) {
              PreparedStatement pstmt = conn.prepareStatement(sqlQuery);
              ResultSet rs = pstmt.executeQuery()) {
 
-            // Print the headers dynamically
+            // Print the headers dynamically                                                                  
             StringBuilder headerLine = new StringBuilder();
-            headerLine.append("--------------------------------------------------------------------------------\n| ");
+            headerLine.append("==========================================================================================================================================================================================================================\n|| ");
             for (String header : columnHeaders) {
-                headerLine.append(String.format("%-20s | ", header)); // Adjust formatting as needed
+                headerLine.append(String.format("%-20s || ", header)); // Adjust formatting as needed
             }
-            headerLine.append("\n--------------------------------------------------------------------------------");
+            headerLine.append("\n==========================================================================================================================================================================================================================");
 
             System.out.println(headerLine.toString());
 
             // Print the rows dynamically based on the provided column names
             while (rs.next()) {
-                StringBuilder row = new StringBuilder("| ");
+                StringBuilder row = new StringBuilder("|| ");
                 for (String colName : columnNames) {
                     String value = rs.getString(colName);
-                    row.append(String.format("%-20s | ", value != null ? value : "")); // Adjust formatting
+                    row.append(String.format("%-20s || ", value != null ? value : "")); // Adjust formatting
                 }
                 System.out.println(row.toString());
             }
-            System.out.println("--------------------------------------------------------------------------------");
+            System.out.println("==========================================================================================================================================================================================================================");
 
         } catch (SQLException e) {
             System.out.println("Error retrieving records: " + e.getMessage());
         }
     }
+    
+    public void viewIndivRecords(String sqlQuery, String[] columnHeaders, String[] columnNames, Object... params) {
+    // Check that columnHeaders and columnNames arrays are the same length
+    if (columnHeaders.length != columnNames.length) {
+        System.out.println("Error: Mismatch between column headers and column names.");
+        return;
+    }
+
+    try (Connection conn = this.connectDB();
+         PreparedStatement pstmt = conn.prepareStatement(sqlQuery)) {
+
+        // Bind parameters dynamically
+        for (int i = 0; i < params.length; i++) {
+            pstmt.setObject(i + 1, params[i]);
+        }
+
+        try (ResultSet rs = pstmt.executeQuery()) {
+            // Print the headers dynamically
+            StringBuilder headerLine = new StringBuilder();
+            headerLine.append("==========================================================================================================================================================================================================================\n|| ");
+            for (String header : columnHeaders) {
+                headerLine.append(String.format("%-20s || ", header)); // Adjust formatting as needed
+            }
+            headerLine.append("\n==========================================================================================================================================================================================================================");
+
+            System.out.println(headerLine.toString());
+
+            // Print the rows dynamically based on the provided column names
+            boolean hasRows = false;
+            while (rs.next()) {
+                hasRows = true;
+                StringBuilder row = new StringBuilder("|| ");
+                for (String colName : columnNames) {
+                    String value = rs.getString(colName);
+                    row.append(String.format("%-20s || ", value != null ? value : "")); // Adjust formatting
+                }
+                System.out.println(row.toString());
+            }
+
+            if (!hasRows) {
+                System.out.println("No records found for the given criteria.");
+            }
+
+            System.out.println("==========================================================================================================================================================================================================================");
+        }
+
+    } catch (SQLException e) {
+        System.out.println("Error retrieving records: " + e.getMessage());
+    }
+}
     
     public void updateRecord(String sql, Object... values) {
         try (Connection conn = this.connectDB(); // Use the connectDB method
@@ -189,5 +239,39 @@ public void addRecord(String sql, Object... values) {
         }
         return result;
     }
+     
+     public String getSingleStringValue(String sql, Object... params) {
+    String result = null;
+    try (Connection conn = connectDB();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        setPreparedStatementValues(pstmt, params);
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            result = rs.getString(1);
+        }
+
+    } catch (SQLException e) {
+        System.out.println("Error retrieving String value: " + e.getMessage());
+    }
+    return result;
+}
+     
+     public int getSingleIntValue(String sql, Object... params) {
+    int result = 0;
+    try (Connection conn = connectDB();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        setPreparedStatementValues(pstmt, params); // Set query parameters
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            result = rs.getInt(1); // Fetch the first column as an integer
+        }
+
+    } catch (SQLException e) {
+        System.out.println("Error retrieving integer value: " + e.getMessage());
+    }
+    return result;
+}
     
 }

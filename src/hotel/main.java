@@ -6,21 +6,21 @@ public class main {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        String response;
         boolean exit = false;
 
-        do {
-            System.out.println("\n------------------------");
-            System.out.println("| Hotel Booking System |");
-            System.out.println("------------------------\n");
-            System.out.println("1. Room");
-            System.out.println("2. Guest");
-            System.out.println("3. Bookings");
-            System.out.println("4. Report");
-            System.out.println("5. Admin");
-            System.out.println("6. Exit");
+        while (!exit) {
+            System.out.println("\n==========================");
+            System.out.println("||      Main Menu       ||");
+            System.out.println("==========================");
+            System.out.println("||      1. Room         ||");
+            System.out.println("||      2. Guest        ||");
+            System.out.println("||      3. Bookings     ||");
+            System.out.println("||      4. Report       ||");
+            System.out.println("||      5. Admin        ||");
+            System.out.println("||      6. Exit         ||");
+            System.out.println("==========================\n");
 
-            int action = 0; 
+            int action = 0;
             boolean validInput = false;
 
             while (!validInput) {
@@ -30,13 +30,13 @@ public class main {
                     if (action < 1 || action > 6) {
                         throw new IllegalArgumentException("Invalid choice. Please choose between 1 and 6.");
                     }
-                    validInput = true; 
+                    validInput = true;
                 } catch (IllegalArgumentException e) {
                     System.out.println(e.getMessage());
-                    sc.nextLine(); 
+                    sc.nextLine();
                 } catch (Exception e) {
                     System.out.println("Invalid input. Please enter a number.");
-                    sc.nextLine(); 
+                    sc.nextLine();
                 }
             }
 
@@ -63,15 +63,11 @@ public class main {
                     break;
                 case 6:
                     exit = true;
+                    System.out.println("Thank you, See you!!");
                     break;
-                    
+                default:
+                    System.out.println("Invalid choice. Please select a valid option.");
             }
-
-                System.out.print("Do you want to continue? (yes/no): ");
-                response = sc.next();
-
-        } while (response.equalsIgnoreCase("yes"));
-
-        System.out.println("Thank you, See you!!");
+        }
     }
 }
