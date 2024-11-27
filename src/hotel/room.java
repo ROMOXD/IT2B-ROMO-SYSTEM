@@ -169,7 +169,6 @@ public void updateRoom() {
     }
     sc.nextLine();
 
-    // Fetch the current room type
     String currRoomTypeQuery = "SELECT r_type FROM tbl_room WHERE r_id = ?";
     String currRoomType = conf.getSingleStringValue(currRoomTypeQuery, id);
 
@@ -204,7 +203,6 @@ public void updateRoom() {
             continue;
         }
 
-        // Check if the new room type is the same as the current room type
         if (NRoomType.equalsIgnoreCase(currRoomType)) {
             System.out.println("The new room type is the same as the current room type (" + currRoomType + "). Please choose a different room type.");
         } else {
@@ -225,7 +223,6 @@ public void updateRoom() {
         try {
             rPrice = sc.nextDouble();
 
-            // Validate if the price matches the selected room type's price
             if (rPrice == NPrice) {
                 validPrice = true;
             } else {
