@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class config {
     
@@ -272,6 +274,81 @@ public void addRecord(String sql, Object... values) {
         System.out.println("Error retrieving integer value: " + e.getMessage());
     }
     return result;
+}
+     
+     public String getLatestBookingDate(String sql, Object... params) {
+    String latestDate = null;
+    try (Connection conn = connectDB();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        setPreparedStatementValues(pstmt, params);
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            latestDate = rs.getString("latest_cout");
+        }
+
+    } catch (SQLException e) {
+        System.out.println("Error retrieving the latest booking date: " + e.getMessage());
+    }
+    return latestDate;
+}
+     
+     public Object[] getMultipleValues(String query, Object... params) {
+    try (Connection conn = connectDB();  // Replace with your connection method
+         PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+        // Bind the parameters to the query
+        for (int i = 0; i < params.length; i++) {
+            pstmt.setObject(i + 1, params[i]);
+        }
+
+        // Execute the query
+        try (ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                int columnCount = rs.getMetaData().getColumnCount();
+                Object[] results = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    results[i - 1] = rs.getObject(i);  // Fetch each column value
+                }
+                return results;
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return null;  // Return null if no result is found or an error occurs
+}
+     
+     public double getSglValue(String sql, Object... params) {
+    double result = 0.0;
+    try (Connection conn = connectDB();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        // Set prepared statement values, converting Date to String if needed
+        setPreparedStatementValues(pstmt, params);
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            result = rs.getDouble(1);
+        }
+
+    } catch (SQLException e) {
+        System.out.println("Error retrieving single value: " + e.getMessage());
+    }
+    return result;
+}
+     
+     public void setPreparedStatementValue(PreparedStatement pstmt, Object... params) throws SQLException {
+    for (int i = 0; i < params.length; i++) {
+        if (params[i] instanceof Date) {
+            // Convert Date to String (assuming your SQL query expects the date in this format)
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Adjust format as needed
+            pstmt.setString(i + 1, sdf.format((Date) params[i]));  // Convert Date to String and set
+        } else {
+            pstmt.setObject(i + 1, params[i]);  // For non-Date types (e.g., Integer, String)
+        }
+    }
 }
     
 }
